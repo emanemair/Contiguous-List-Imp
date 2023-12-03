@@ -18,6 +18,7 @@ void ListType::addToPosition(int ele, int pos)
 			this->list[i] = this->list[i - 1]; 
 		}
 		this->list[pos] = ele; 
+		count++; 
 	}
 	else
 	{
@@ -231,6 +232,38 @@ void ExtendedList::addSorted(int e)
 	}
 }
 
+int ExtendedList::searchSorted(int e)const {
+
+	int pos = count;
+	if (!isEmpty())
+	{
+
+		for (int i = 0; i < count; i++)
+		{
+			if (list[i] >= e)
+			{
+				return i;
+			}
+		}
+	}
+	else
+		cout << "the list is empty " << endl;
+	return pos;
+
+}
+
+
+void ExtendedList::addSorted(int e)
+{
+	if (!isFull())
+	{
+		this->addToPosition(e, this->searchSorted(e));
+	}
+	else
+	{
+		cout << "List is Full" << endl;
+	}
+}
 
 
 

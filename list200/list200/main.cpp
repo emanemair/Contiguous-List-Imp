@@ -22,5 +22,8 @@ int main()
 	list.deleteFromPosition(2); 
 	list.deleteElement(6);
 	list.print(); 
+	list.addSorted(5);
+	list.addSorted(-1); 
+	list.print();
 	return 0; 
 }

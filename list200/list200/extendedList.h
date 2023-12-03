@@ -18,8 +18,6 @@ public :
 	void deleteFirst(); 
 	void deleteLast(); 
 	void deleteElement(int e);
-	/* 
-	int searchSorted(int ele) ; 
-	void addSorted(int ele); 
-	*/
+	int searchSorted(int ele) const; // return the correct pos for the element if the list was sorted  
+	void addSorted(int ele); // add element to a sorted list 
 };
