@@ -3,12 +3,6 @@
 using namespace std; 
 
 
-
-
-
-
-
-
 class ExtendedList : public ListType
 {
 public : 
