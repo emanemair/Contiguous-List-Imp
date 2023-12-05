@@ -1,17 +1,21 @@
 #pragma once
 #include"listType.h"
-using namespace std; 
 
+using namespace std;
 
-class ExtendedList : public ListType
+template <class type>
+class ListPlus : public List<type>
 {
-public : 
-	void addToFirst(int ele);
-	void addToLast(int ele); 
-	void addBeforeElement(int ele , int bEle); 
-	void deleteFirst(); 
-	void deleteLast(); 
-	void deleteElement(int e);
-	int searchSorted(int ele) const; // return the correct pos for the element if the list was sorted  
-	void addSorted(int ele); // add element to a sorted list 
+	ErrorCode addToFirst(type ele);
+	ErrorCode addToLast(type ele);
+	ErrorCode addBeforeElement(type ele, type value);
+	ErrorCode addElement(type ele);
+	ErrorCode deleteFirst();
+	ErrorCode deleteLast();
+	ErrorCode deleteElement(type ele);
+	int searchSorted(type ele);
+	ErrorCode addSorted(type ele);
+
+
+
 };
