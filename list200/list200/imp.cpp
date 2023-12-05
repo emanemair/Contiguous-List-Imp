@@ -1,269 +1,266 @@
-#include<iostream>
+#include"listPlus.h"
 #include"listType.h"
-#include"extendedList.h"
-using namespace std; 
+#include<iostream>
 
+using namespace std;
 
-
-ListType::ListType()
+template <class type>
+List<type>::List()
 {
-	this->count = 0; 
+	count = 0;
 }
-void ListType::addToPosition(int ele, int pos)
+
+template <class type>
+List<type>::~List()
+{
+	cout << "This List will be deleted" << endl;
+	for (int i = count - 1; i >= 0; i--)
+	{
+		deleteFromPosition(i);
+	}
+}
+
+
+template<class type>
+ErrorCode List<type>::addToPosition(type ele, int pos)
 {
 	if (!isFull())
 	{
-		for (int i = count; i > pos; i--)
+		if (pos >= 0 && pos <= count)
 		{
-			this->list[i] = this->list[i - 1]; 
-		}
-		this->list[pos] = ele; 
-		count++; 
-	}
-	else
-	{
-		cout << "List is Full " << endl; 
-	}
-}
-void ListType::deleteFromPosition(int pos)
-{
-	if (!isEmpty())
-	{
-		for (int i = pos; i < count; i++)
-		{
-			this->list[i] = this->list[i + 1]; 
-		}
-		count--; 
-	}
-}
-bool ListType::isEmpty()const
-{
-	return this->count == 0; 
-}
-bool ListType::isFull()const
-{
-	return this->count == SIZE; 
-}
-void ListType::print() const
-{
-	if (!isEmpty())
-	{
-		for (int i = 0; i < this->count; i++)
-		{
-			cout << this->list[i] << " "; 
-		}
-		cout << endl; 
-	}
-	else
-	{
-		cout << "list is empty" << endl; 
-	}
-}
-
-int ListType::search(int ele)const
-{
-	if (!isEmpty())
-	{
-		for (int i = 0; i < this->count; i++)
-		{
-			if (this->list[i] == ele)
+			int ele_index = search(ele);
+			if (ele_index != -1)
 			{
-				return i;
+				for (int i = count; i > pos; i--)
+				{
+					list[i] = list[i - 1];
+				}list[pos] = ele;
+				count++;
+				return Sucessful;
 			}
-		}return -1; 
-	}
-	else
-	{
-		cout << "list is empty" << endl; 
-	}
-
-}
-
-int ListType::getCount()const
-{
-	return this->count; 
-}
-
-
-
-void ExtendedList::addToFirst(int ele)
-{
-	if (!isFull())
-	{
-		for (int i = count; i > 0; i--)
-		{
-			this->list[i] = this->list[i - 1]; 
+			else Duplicate;
 		}
-		this->list[0] = ele; 
-		count++; 
+		else invalidPos;
 	}
-	else
-	{
-		cout << "List is Full" << endl; 
-	}
+	else OverFlow;
 }
 
-void ExtendedList::addToLast(int ele)
-{
-	if (!isFull())
-	{
-		this->list[count] = ele; 
-		count++; 
-	}
-	else
-	{
-		cout << "list is full" << endl; 
-	}
-}
 
-void ExtendedList::addBeforeElement(int ele, int bEle)
+template<class type>
+ErrorCode List<type>::deleteFromPosition(int pos)
 {
-	if (!isFull())
+	if (!isEmpty())
 	{
-		int before_ele_index = this->search(bEle); 
-		if (before_ele_index != -1)
+		if (pos >= 0 && pos < count)
 		{
-			for (int i = count; i > before_ele_index; i--)
+			for (int i = pos; i < count; i++)
 			{
-				this->list[i] = this->list[i - 1]; 
+				list[i] = list[i + 1];
 			}
-			int index_to_insert = before_ele_index; 
-			this->list[index_to_insert] = ele;
-			count++; 
-		}
-		else
-		{
-			cout << "element you want to insert before dose not exist" << endl; 
-		}
-	}
-	else
-	{
-		cout << "list is full" << endl;
-	}
+			count--;
+		}return invalidPos;
+	}return underFlow;
 }
 
-void ExtendedList::deleteFirst()
+template<class type>
+int List<type>::getCount()
+{
+	return count;
+}
+
+
+
+template<class type>
+bool List<type>::isEmpty()
+{
+	return count == 0;
+}
+
+template<class type>
+bool List<type> ::isFull()
+{
+	return count == SIZE;
+}
+
+template<class type>
+ErrorCode List<type>::print()
 {
 	if (!isEmpty())
 	{
 		for (int i = 0; i < count; i++)
 		{
-			this->list[i] = this->list[i + 1];
-
-		}count--;
-
-	}
-	else
-	{
-		cout << "List is Empty" << endl; 
-	}
-	
+			cout << list[i] << " ";
+		}cout << endl;
+	}return underFlow;
 }
-
-
-void ExtendedList::deleteLast()
+template<class type>
+int List<type>::search(type ele)
 {
+	int pos = -1;
 	if (!isEmpty())
 	{
-		count--; 
-	}
-	else
-	{
-		cout << "List is Empty" << endl; 
-	}
-}
-
-
-void ExtendedList::deleteElement(int ele)
-{
-	if (!isEmpty())
-	{
-		int ele_index = this->search(ele);
-		if (ele_index != -1)
-		{
-			for (int i = ele_index; i < count; i++)
-			{
-				this->list[i] = this->list[i + 1];
-			}count--;
-		}
-		else
-		{
-			cout << "ele dose not exist" << endl; 
-		}
-
-	}
-	else
-	{
-		cout << "list is empty" << endl; 
-	}
-}
-
-
-int ExtendedList::searchSorted(int e)const {
-
-	int pos = count;
-	if (!isEmpty())
-	{
-		
 		for (int i = 0; i < count; i++)
 		{
-			if (list[i] >= e)
-			{
-				return i; 
-			}
-		}
-	}
-	else
-		cout << "the list is empty " << endl; 
-	return pos; 
-
-}
-
-
-void ExtendedList::addSorted(int e)
-{
-	if (!isFull())
-	{
-		this->addToPosition(e, this->searchSorted(e)); 
-	}
-	else
-	{
-		cout << "List is Full" << endl; 
-	}
-}
-
-int ExtendedList::searchSorted(int e)const {
-
-	int pos = count;
-	if (!isEmpty())
-	{
-
-		for (int i = 0; i < count; i++)
-		{
-			if (list[i] >= e)
+			if (list[i] == ele)
 			{
 				return i;
 			}
 		}
 	}
 	else
-		cout << "the list is empty " << endl;
-	return pos;
-
+		cout << "under flow , this list is empty " << endl;
+	return -1;
 }
 
 
-void ExtendedList::addSorted(int e)
+template<class type>
+ErrorCode ListPlus<type> ::addToFirst(type ele)
 {
 	if (!isFull())
 	{
-		this->addToPosition(e, this->searchSorted(e));
-	}
-	else
-	{
-		cout << "List is Full" << endl;
-	}
+		int index = search(ele);
+		if (index == -1)
+		{
+			addToPosition(ele, 0);
+
+		}return Duplicate;
+
+	}return OverFlow;
 }
+
+
+template<class type>
+ErrorCode ListPlus<type>::addToLast(type ele)
+{
+	if (!isFull())
+	{
+		int index = search(ele);
+		if (index == -1)
+		{
+			addToPosition(ele, count);
+		}
+		else return Duplicate;
+	}return OverFlow;
+}
+
+
+template<class type>
+ErrorCode ListPlus<type>::deleteFirst()
+{
+	if (!isEmpty())
+	{
+		deleteFromPosition(0);
+
+	}return underFlow;
+}
+
+template<class type>
+ErrorCode ListPlus<type>::addElement(type ele)
+{
+	if (!isFull())
+	{
+		int index = search(ele);
+		if (index == -1)
+		{
+			int pos;
+			cout << "in what position you want to add element : " << e << " ?  pos : " << 0 << " - " << count << endl;
+			cin >> pos;
+			while (pos < 0 | pos > count)
+			{
+				cout << "Please enter a valid position " << 0 << " _  " << count << endl;
+			}
+			addToPosition(ele, pos);
+
+		}
+		else return Duplicate;
+	}return OverFlow;
+}
+template<class type >
+ErrorCode ListPlus<type>::addBeforeElement(type ele, type value)
+{
+	if (!isFull())
+	{
+		int ele_index = search(ele);
+		if (ele_index == -1)
+		{
+			int value_index = search(value);
+			if (value_index != -1)
+			{
+				addToPosition(ele, value_index);
+				return Sucessful;
+			}
+			else return notFound;
+
+		}
+		else return Duplicate;
+	}
+	else return OverFlow;
+}
+
+template<class type>
+ErrorCode ListPlus<type>::deleteLast()
+{
+	if (!isEmpty())
+	{
+		count--;
+		return Sucessful;
+
+	}return underFlow;
+}
+template<class type>
+ErrorCode ListPlus<type>::deleteElement(type ele)
+{
+	if (!isEmpty())
+	{
+		int index = search(ele);
+		if (index != -1)
+		{
+			deleteFromPosition(ele, index);
+			return Sucessful;
+		}return notFound;
+
+	}return underFlow;
+}
+
+template<class type>
+int ListPlus<type> ::searchSorted(type ele)
+{
+	if (!isEmpty())
+	{
+		int index = search(ele);
+		if (index != -1)
+		{
+			for (int i = 0; i < count; i++)
+			{
+				if (list[i] = > ele)
+				{
+					return i;
+				}
+			}
+		}
+		else return notFound;
+	}
+	else return underFlow;
+}
+
+template <class type>
+ErrorCode ListPlus<type>::addSorted(type ele)
+{
+	if (!isFull())
+	{
+		int index = search(ele);
+		if (index == -1)
+		{
+			addToPosition(ele, searchSorted(ele));
+			return Sucessful
+		}
+		else return Duplicate;
+
+	}return OverFlow;
+}
+
+
+
 
 
 
