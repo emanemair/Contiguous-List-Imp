@@ -1,19 +1,23 @@
 #pragma once
+using namespace std;
 
-using namespace std; 
+const int SIZE = 10;
+enum ErrorCode { Sucessful, underFlow, OverFlow, Duplicate, notFound, invalidPos };
+template <class type>
+class List {
+protected:
+	type list[SIZE];
+	int count;
+public:
+	List();
+	~List();
+	bool isEmpty();
+	bool isFull();
+	int getCount();
+	int search(type ele);
+	ErrorCode addToPosition(type ele, int pos);
+	ErrorCode print();
+	ErrorCode deleteFromPosition(int pos);
 
-const int SIZE = 100; 
-class ListType {
-protected : 
-	int list[SIZE];
-	int count; 
-public: 
-	ListType(); 
-	void addToPosition(int ele, int pos); 
-	void deleteFromPosition(int pos); 
-	bool isEmpty()const; 
-	bool isFull()const; 
-	void print() const; 
-	int search(int ele)const; 
-	int getCount()const; 
+
 };
